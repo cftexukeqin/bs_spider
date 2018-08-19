@@ -37,6 +37,7 @@ class BSSpider(threading.Thread):
             for each in img_infos:
                 title = each.get('title').strip()
                 img_url = each.get('data-original')
+                # 数据入队列
                 self.info_queue.put((title,full_url,img_url))
                 # print(title,full_url,img_url)
                 # print(self.info_queue.qsize())
@@ -48,7 +49,8 @@ class BSWrite(threading.Thread):
         self.info_queue = info_queue
         self.writer = writer
         self.gLock = gLock
-
+    # 保存数据要动点脑袋
+    # 创建好writer 和 Lock 对象
     def run(self):
         while True:
             try:
@@ -85,7 +87,7 @@ def main():
     for i in range(5):
         t = BSWrite(info_queue,writer,gLock)
         t.start()
-
+# 文件用excel 打开乱码，因此进行测试
 def text():
     with open('infos.csv',"r",encoding="utf-8") as fp:
         reader = csv.reader(fp)
